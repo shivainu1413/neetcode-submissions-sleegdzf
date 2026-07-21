@@ -6,24 +6,32 @@
 
 class Solution:
     def reorderList(self, head: Optional[ListNode]) -> None:
-        slow, fast = head, head.next
+        first = slow = fast = head
         while fast and fast.next:
             slow = slow.next
             fast = fast.next.next
         second = slow.next
         slow.next = None
-
+        
         prev = None
-        curr = second
-        while curr:
-            tmp_next = curr.next
-            curr.next = prev
-            prev = curr
-            curr = tmp_next
-        first, second = head, prev
         while second:
-            first_next = first.next
-            second_next = second.next
-            first.next = second
-            second.next = first_next
-            first, second = first_next, second_next
+            nxt = second.next
+            second.next = prev
+            prev = second
+            second = nxt
+        second = prev
+        dummy = ListNode()
+        curr = dummy
+        while first and second:
+            curr.next = first
+            first = first.next
+            curr = curr.next
+            curr.next = second
+            second = second.next
+            curr = curr.next
+        if first:
+            curr.next=first
+
+        
+        
+
